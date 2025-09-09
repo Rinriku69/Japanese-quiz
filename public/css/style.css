@@ -4,7 +4,8 @@
 
 /* Using CSS Variables for easy theming and consistency */
 :root {
-    --primary-color: #4a90e2; /* A nice, friendly blue */
+    --primary-color: #4a90e2;
+    /* A nice, friendly blue */
     --primary-hover: #357ABD;
     --danger-color: #d9534f;
     --danger-hover: #c9302c;
@@ -17,13 +18,15 @@
 
 /* General Body & Layout Styles */
 body {
-    font-family: 'Inter', sans-serif; /* A clean, readable font */
+    font-family: 'Inter', sans-serif;
+    /* A clean, readable font */
     margin: 0;
     background-color: var(--light-bg);
     color: var(--text-color);
     display: flex;
     flex-direction: column;
-    min-height: 100vh; /* Ensures footer sticks to the bottom */
+    min-height: 100vh;
+    /* Ensures footer sticks to the bottom */
 }
 
 /* Header and Navigation Bar */
@@ -32,7 +35,8 @@ header {
     padding: 1rem 2.5rem;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
     display: flex;
-    justify-content: space-between; /* Pushes nav and user actions to opposite ends */
+    justify-content: space-between;
+    /* Pushes nav and user actions to opposite ends */
     align-items: center;
     border-bottom: 1px solid var(--border-color);
 }
@@ -43,7 +47,8 @@ nav ul {
     padding: 0;
     display: flex;
     align-items: center;
-    gap: 2rem; /* Space between nav links */
+    gap: 2rem;
+    /* Space between nav links */
 }
 
 nav a {
@@ -52,7 +57,8 @@ nav a {
     font-weight: 500;
     font-size: 1.1rem;
     padding-bottom: 5px;
-    border-bottom: 2px solid transparent; /* For a subtle hover effect */
+    border-bottom: 2px solid transparent;
+    /* For a subtle hover effect */
     transition: color 0.3s ease, border-bottom-color 0.3s ease;
 }
 
@@ -71,11 +77,13 @@ nav a:hover {
 .username {
     font-size: 0.9rem;
     color: #6c757d;
-    white-space: nowrap; /* Prevents username from wrapping */
+    white-space: nowrap;
+    /* Prevents username from wrapping */
 }
 
 /* General Button & Link-as-Button Styling */
-.login-button, .logout-button {
+.login-button,
+.logout-button {
     display: inline-block;
     padding: 0.6rem 1.2rem;
     border-radius: 8px;
@@ -111,11 +119,13 @@ nav a:hover {
 
 /* Main Content Area */
 main {
-    flex: 1; /* This allows the main content to grow and fill available space */
+    flex: 1;
+    /* This allows the main content to grow and fill available space */
     padding: 2.5rem;
     max-width: 1200px;
     width: 100%;
-    margin: 0 auto; /* Centers the content on larger screens */
+    margin: 0 auto;
+    /* Centers the content on larger screens */
     box-sizing: border-box;
 }
 
@@ -126,6 +136,16 @@ main {
     padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+
+    .library-link {
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+        font-weight: bold;
+        text-decoration: none;
+        display: block;
+        margin: 10px auto 10px auto;
+        color: #476EAE;
+    }
 }
 
 
@@ -135,7 +155,8 @@ footer {
     color: var(--light-bg);
     text-align: center;
     padding: 1.5rem;
-    margin-top: auto; /* Helps push footer to the bottom */
+    margin-top: auto;
+    /* Helps push footer to the bottom */
 }
 
 /* NEW STYLES FOR LIBRARY PAGES */
@@ -167,17 +188,20 @@ footer {
     color: #495057;
 }
 
-.form-control, .form-select {
+.form-control,
+.form-select {
     width: 100%;
     padding: 0.8rem 1rem;
     font-size: 1rem;
     border-radius: 8px;
     border: 1px solid var(--border-color);
-    box-sizing: border-box; /* Ensures padding doesn't affect width */
+    box-sizing: border-box;
+    /* Ensures padding doesn't affect width */
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.form-control:focus, .form-select:focus {
+.form-control:focus,
+.form-select:focus {
     outline: none;
     border-color: var(--primary-color);
     box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
@@ -209,12 +233,14 @@ footer {
 
 /* Table Styles (for characters.blade.php) */
 .table-container {
-    overflow-x: auto; /* For responsiveness on small screens */
+    overflow-x: auto;
+    /* For responsiveness on small screens */
 }
 
 .styled-table {
     width: 100%;
-    border-collapse: collapse; /* Removes space between cells */
+    border-collapse: collapse;
+    /* Removes space between cells */
     font-size: 0.95rem;
 }
 
@@ -224,7 +250,8 @@ footer {
     text-align: left;
 }
 
-.styled-table th, .styled-table td {
+.styled-table th,
+.styled-table td {
     padding: 12px 15px;
 }
 
@@ -265,7 +292,8 @@ footer {
 
 .quiz-container {
     max-width: 700px;
-    margin: 2rem auto; /* Adds some space from the header */
+    margin: 2rem auto;
+    /* Adds some space from the header */
     text-align: center;
 }
 
@@ -279,7 +307,8 @@ footer {
 
 /* Style for the big Japanese character */
 .quiz-question h1 {
-    font-size: 8rem; /* Makes the character very large and easy to see */
+    font-size: 8rem;
+    /* Makes the character very large and easy to see */
     font-weight: 700;
     color: var(--primary-color);
     margin: 0;
@@ -291,14 +320,17 @@ footer {
     font-size: 1.2rem;
     color: #6c757d;
     margin-top: 1rem;
-    text-transform: capitalize; /* Ensures 'hiragana' becomes 'Hiragana' */
+    text-transform: capitalize;
+    /* Ensures 'hiragana' becomes 'Hiragana' */
     font-weight: 500;
 }
 
 .quiz-choices {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Creates a 2x2 grid */
-    gap: 1.5rem; /* Space between the buttons */
+    grid-template-columns: repeat(2, 1fr);
+    /* Creates a 2x2 grid */
+    gap: 1.5rem;
+    /* Space between the buttons */
 }
 
 /* Styling for the choice buttons */
@@ -312,18 +344,205 @@ footer {
     border-radius: 12px;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 .choice-btn:hover {
     background-color: var(--primary-color);
     color: var(--white-color);
     border-color: var(--primary-color);
-    transform: translateY(-5px); /* Adds a subtle lift effect on hover */
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transform: translateY(-5px);
+    /* Adds a subtle lift effect on hover */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .choice-btn:focus {
     outline: none;
     box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.25);
+}
+
+.view-result-container {
+    margin-top: 2.5rem;
+    /* Adds space above the button */
+    padding-top: 1.5rem;
+    /* More space */
+    border-top: 1px solid var(--light-gray);
+    /* A subtle separator line */
+    text-align: center;
+    /* Centers the button */
+}
+
+.btn-view-result {
+    display: inline-block;
+    background-color: #6c757d;
+    /* A neutral, secondary color */
+    color: var(--white-color);
+    border: none;
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 50px;
+    /* Pill shape */
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-view-result:hover {
+    background-color: #5a6268;
+    transform: translateY(-2px);
+}
+
+.quiz-selection-container {
+    max-width: 900px;
+    margin: 2rem auto;
+}
+
+.quiz-selection-container h1 {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    font-size: 2.2rem;
+    color: var(--dark-text);
+}
+
+.quiz-option-card {
+    background-color: var(--white-color);
+    padding: 1.5rem 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.quiz-option-card h2 {
+    margin: 0 0 0.25rem 0;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+.quiz-option-card p {
+    margin: 0;
+    color: var(--medium-text);
+}
+
+.btn-start-quiz {
+    display: inline-block;
+    background: linear-gradient(45deg, #4A90E2, #50E3C2);
+    color: var(--white-color);
+    border: none;
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
+    white-space: nowrap;
+    /* Prevents button text from wrapping */
+}
+
+.btn-start-quiz:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(74, 144, 226, 0.5);
+}
+
+/* Style for disabled/coming soon cards */
+.quiz-option-card.disabled {
+    background-color: #f8f9fa;
+    box-shadow: none;
+    border: 1px dashed #e0e0e0;
+}
+
+.quiz-option-card.disabled h2 {
+    color: #999;
+}
+
+.quiz-option-card.disabled p {
+    color: #aaa;
+}
+
+.quiz-option-card.disabled .btn-start-quiz:disabled,
+.quiz-option-card.disabled button[disabled] {
+    background: #ccc;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+/* Styling the overall form container */
+.login-form-container {
+    width: 300px;
+    margin: 50px auto; /* Centers the form horizontally and adds top margin */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+/* Styling form headings */
+.login-form-container h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Styling labels for input fields */
+.login-form-container label {
+    display: block; /* Makes labels appear on their own line */
+    margin-bottom: 8px;
+    color: #555;
+    font-weight: bold;
+}
+
+/* Styling input fields (text, password) */
+.login-form-container input[type="text"],
+.login-form-container input[type="email"],
+.login-form-container input[type="password"] {
+    width: calc(100% - 20px); /* Full width minus padding */
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box; /* Includes padding and border in the element's total width and height */
+}
+
+/* Styling the submit button */
+.login-form-container button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease; /* Smooth transition on hover */
+}
+
+.login-form-container button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* Styling for "Forgot Password" or "Sign Up" links */
+.login-form-container .links {
+    text-align: center;
+    margin-top: 15px;
+    display: block;
+    margin: auto auto 10px auto;
+}
+
+.login-form-container .links a {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.login-form-container .links a:hover {
+    text-decoration: underline;
 }

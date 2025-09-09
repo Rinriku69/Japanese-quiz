@@ -27,6 +27,7 @@ Route::controller(QuizController::class)
     route::get('/question','quiz_form')->name('form');
     route::post('/result','result')->name('result');
     route::post('','process')->name('process');
+    route::get('/start','start')->name('start');
     
     //route::post('/start','start')->name('start');
    

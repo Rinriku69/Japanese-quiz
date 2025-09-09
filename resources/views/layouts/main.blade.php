@@ -50,6 +50,51 @@ if (session_status() === PHP_SESSION_NONE) {
     <footer>
         Created by Sirithep Pukim
     </footer>
+    <audio id="click-sound" preload="auto">
+        
+        <source src="{{ asset('sounds/choice-click.mp3') }}" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <audio id="result-sound" preload="auto">
+        
+        <source src="{{ asset('sounds/result.mp3') }}" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    {{-- JAVASCRIPT TO PLAY THE SOUND --}}
+    <script>
+        // Wait for the entire page to load before running the script
+        document.addEventListener('DOMContentLoaded', (event) => {
+
+            // Find the audio element in the HTML
+            const clickSound = document.getElementById('click-sound');
+            const resultSound = document.getElementById('result-sound');
+
+            // Find ALL elements on the page that have the class 'clickable-sound'
+            const soundButtons = document.querySelectorAll('.clickable-sound');
+            const resultButtons = document.querySelectorAll('.result-sound');
+
+            // Loop through each of the found elements
+            soundButtons.forEach(button => {
+                // Add a 'click' event listener to each one
+                button.addEventListener('click', () => {
+                    // Stop the sound if it's already playing and reset it to the start
+                    clickSound.currentTime = 0;
+                    // Play the sound
+                    clickSound.play();
+                });
+            });
+            resultButtons.forEach(button => {
+                
+                button.addEventListener('click', () => {
+                    
+                    resultSound.currentTime = 0;
+                   
+                    resultSound.play();
+                });
+            });
+        });
+    </script>
 
 </body>
 

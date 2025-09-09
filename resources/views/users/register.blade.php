@@ -6,6 +6,7 @@
 <h1>Register New Account</h1>
     <form action="{{route('user.register')}}" method="POST">
         @csrf
+        <div class="login-form-container">
         <div>
             <label for="username">Username:</label>
             <input type="text" id="username" name="name" required>
@@ -21,5 +22,5 @@
        
         <button type="submit">Register</button>
     </form>
-    
+    </div>
 @endsection

@@ -4,8 +4,8 @@
 
 @section('content')
     <div class="content-wrapper">
-        <a href="{{ route('library.add_characters') }}">Add new Character</a>
+        <a href="{{ route('library.add_characters') }}" class="library-link">Add new Character</a>
         <br>
-        <a href="{{ route('library.characters') }}">View all characters</a>
+        <a href="{{ route('library.characters') }}" class="library-link">View all characters</a>
     </div>
 @endsection

@@ -1,10 +1,8 @@
 @extends('layouts.main', ['title' => 'Multiple Choice'])
 
 @section('content')
-
-  
     <div class="quiz-container">
-      <h1>Question : {{$question_number}}</h1>
+        <h1>Question : {{ $question_number }}</h1>
         <div class="quiz-question">
             <h1>{{ $correctAnswer->character }}</h1>
             <p class="kana-type">{{ $correctAnswer->type }}</p>
@@ -12,24 +10,25 @@
 
         <form action="{{ route('quiz.process') }}" method="POST">
             @csrf
-            {{-- We need to pass the correct answer's ID to the next page to check if the user was right --}}
+
             <input type="hidden" name="correct_answer_id" value="{{ $correctAnswer->idcharacters }}">
 
             <div class="quiz-choices">
                 @foreach ($options as $choice)
-                    {{-- The name of the button is "choice" so we can retrieve it in the controller --}}
-                    <button type="submit" name="choice" value="{{ $choice->idcharacters }}" class="choice-btn">
+                    <button type="submit" name="choice" value="{{ $choice->idcharacters }}" class="choice-btn clickable-sound">
                         {{ $choice->romaji }}
                     </button>
                 @endforeach
             </div>
         </form>
-        <form action="{{route('quiz.result')}}" method="POST">
-            @csrf
-            @if(    $question_number >= 2)
-             <input type="hidden" name="result" value="">
-             
-             <button type="submit">View Result</button> @endif
-        </form>
+        <div class="view-result-container">
+            <form action="{{ route('quiz.result') }}" method="POST">
+                @csrf
+                @if ($question_number >= 2)
+                    
+                    <button type="submit" class="btn-view-result result-sound">Finish & View Result</button>
+                @endif
+            </form>
+        </div>
     </div>
 @endsection
