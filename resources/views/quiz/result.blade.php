@@ -34,10 +34,14 @@
                 </div>
             @endforeach
         </div>
-
+        
+        <form action="{{route('quiz.start')}}" method="POST">
+            @csrf
+            <input type="hidden" name="quiz_level" value="{{$quiz_level}}">
         <div class="results-actions">
-            <a href="{{ route('quiz.start') }}" class="btn-retry-quiz clickable-sound">Retry Quiz</a>
+            <button type="submit" class="btn-retry-quiz clickable-sound">Retry Quiz</button>
         </div>
+    </form>
     </div>
 </div>
 @endsection

@@ -24,7 +24,7 @@
 
         <form action="{{ route('quiz.process') }}" method="POST">
             @csrf
-
+            @yield('quiz_level')
             <input type="hidden" name="correct_answer_id" value="{{ $correctAnswer->idcharacters }}">
 
             <div class="quiz-choices">
@@ -42,6 +42,7 @@
             <form action="{{ route('quiz.result') }}" method="POST">
                 @csrf
                 @if ($question_number >= 2)
+                    <input type="hidden" name="quiz_level" value="{{$quiz_level}}">
                     <button type="submit" class="btn-view-result result-sound">Finish & View Result</button>
                 @endif
             </form>

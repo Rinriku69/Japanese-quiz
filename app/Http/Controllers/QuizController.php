@@ -13,31 +13,58 @@ class QuizController extends Controller
 
 
 
-    function quiz_form(): View
+    function quiz_level(int $level): array
     {
-        $correctAnswer = Character::inrandomOrder()->first();
+        $correctAnswer = Character::where('idcharacters','<=',$level)
+        ->inrandomOrder()->first();
         $wrongAnswer = Character::where('idcharacters', '!=', $correctAnswer->id)
             ->where('type','=',$correctAnswer->type)
             ->inrandomOrder()
             ->limit(3)
             ->get();
 
+        $options = $wrongAnswer->push($correctAnswer)->shuffle();
 
+        $choices=[];
+        $choices['options'] = $options;
+        $choices['correctAnswer'] = $correctAnswer;
+        return $choices;
+    }
 
+    function intermediate_quiz(): View{
+        
         $answer_collect = session()->get('quiz_answers', []);
         $question_number = count($answer_collect) + 1;
+        $choices = $this->quiz_level(92);
+        $options = $choices['options'];
+        $correctAnswer = $choices['correctAnswer'];
 
-
-
-
-        $options = $wrongAnswer->push($correctAnswer)->shuffle();
-        return view('quiz.choice', [
+        return view('hira-kata.intermediate', [
             'options' => $options,
             'correctAnswer' => $correctAnswer,
             'question_number' => $question_number,
-
+            'quiz_level' => 'intermediate',
         ]);
     }
+
+    function beginner_quiz(): View{
+        
+        $answer_collect = session()->get('quiz_answers', []);
+        $question_number = count($answer_collect) + 1;
+        $choices = $this->quiz_level(10);
+        $options = $choices['options'];
+        $correctAnswer = $choices['correctAnswer'];
+
+        return view('hira-kata.beginner', [
+            'options' => $options,
+            'correctAnswer' => $correctAnswer,
+            'question_number' => $question_number,
+            'quiz_level' => 'beginner',
+        ]);
+    }
+
+
+
 
     function process(ServerRequestInterface $request): RedirectResponse
     {
@@ -49,7 +76,11 @@ class QuizController extends Controller
         ];
         session()->put('quiz_answers', $answer_collect);
 
-        return redirect()->route('quiz.form');
+        if($data['quiz_level'] == 'intermediate'){
+        return redirect()->route('quiz.intermediate');
+        }else{
+        return redirect()->route('quiz.beginner');
+        }
     }
 
     public function prepareAnswers(array $items): array
@@ -71,9 +102,11 @@ class QuizController extends Controller
 
 
 
-    function result(): view
+    function result(ServerRequestInterface $request): view
     {
+        $data = $request->getParsedBody();
         $answers_collect = session()->get('quiz_answers', []);
+        $quiz_level = $data['quiz_level'];
 
 
         $score = 0;
@@ -89,15 +122,22 @@ class QuizController extends Controller
             'score' => $score,
             'total' => count($answers_collect),
             'answers' => $answer_info,
+            'quiz_level' => $quiz_level,
 
 
         ]);
     }
 
-    public function start():RedirectResponse
+    public function start(ServerRequestInterface $request):RedirectResponse
     {
-        
+        $data = $request->getParsedBody();
+        $level = $data['quiz_level']; 
         session()->forget('quiz_answers');
-        return redirect()->route('quiz.form');
+
+        if($level == 'intermediate'){
+        return redirect()->route('quiz.intermediate');
+        }else{
+        return redirect()->route('quiz.beginner');
+        }
     } 
 }

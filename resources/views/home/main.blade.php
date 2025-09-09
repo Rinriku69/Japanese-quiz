@@ -11,7 +11,7 @@
                 <h2>Hiragana & Katakana</h2>
                 <p>A multiple-choice quiz on basic character readings.</p>
             </div>
-            <form action="{{ route('quiz.start') }}" method="get">
+            <form action="{{ route('quiz.intermediate') }}" method="get">
                 
                 <button type="submit" class="btn-start-quiz">Start Quiz</button>
             </form>

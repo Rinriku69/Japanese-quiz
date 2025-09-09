@@ -24,10 +24,11 @@ Route::controller(QuizController::class)
 ->prefix('/quiz')
 ->name('quiz.')
 ->group(static function(): void{
-    route::get('/question','quiz_form')->name('form');
+    route::get('/intermediate','intermediate_quiz')->name('intermediate');
+    route::get('/beginner','beginner_quiz')->name('beginner');
     route::post('/result','result')->name('result');
     route::post('','process')->name('process');
-    route::get('/start','start')->name('start');
+    route::post('/start','start')->name('start');
     
     //route::post('/start','start')->name('start');
    
