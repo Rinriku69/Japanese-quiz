@@ -29,7 +29,7 @@ class UserController extends Controller
     }
 
     function login(ServerRequestInterface $request): RedirectResponse{
-     // 1. Get data from the request body. This is the correct PSR-7 method.
+     
         $credentials = $request->getParsedBody();
 
         // 2. Manually validate the data using Laravel's Validator facade.
@@ -40,12 +40,9 @@ class UserController extends Controller
 
         // 3. Check if validation fails.
         if ($validator->fails()) {
-            // Since we can't use Laravel's ->withErrors() on a redirect from here easily,
-            // we'll just redirect with a simple message.
             return redirect()->route('user.login_form', ['message' => 'Name and password are required.']);
         }
 
-        // 4. Find the user by name.
         $user_data = User::where('name', $credentials['name'])->first();
 
         // 5. Check if the user exists and the password is correct using Hash::check().
@@ -57,7 +54,7 @@ class UserController extends Controller
             }
             $_SESSION['username'] = $user_data->name;
 
-            return redirect()->route('quiz.main');
+            return redirect()->route('home.main');
         } else {
             // For security, use a generic error message.
             return redirect()->route('user.login_form', ['message' => 'Login failed']);
