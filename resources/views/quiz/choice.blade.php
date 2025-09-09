@@ -27,8 +27,6 @@
         <form action="{{route('quiz.result')}}" method="POST">
             @csrf
             @if(    $question_number >= 2)
-            
-             <p> haha</p>
              <input type="hidden" name="result" value="">
              
              <button type="submit">View Result</button> @endif
