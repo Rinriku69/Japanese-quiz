@@ -66,7 +66,7 @@ class UserController extends Controller
         session_start();
         session_destroy();
         session_unset();
-        return redirect()->route('quiz.main');
+        return redirect()->route('home.main');
     }
 
 

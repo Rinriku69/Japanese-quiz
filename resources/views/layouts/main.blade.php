@@ -24,8 +24,11 @@ if (session_status() === PHP_SESSION_NONE) {
             <ul>
                 <li><a href="{{ route('home.main') }}">Quiz</a></li>
                 <li><a href="{{ route('library.main') }}">Library</a></li>
+                @isset($_SESSION['username'])
+                <li class="user"><a href="{{ route('user.login') }}">Profile</a></li>
+                @else
                 <li class="user"><a href="{{ route('user.login') }}">Login</a></li>
-
+                 @endisset
 
             </ul>
         </nav>
