@@ -60,6 +60,11 @@ if (session_status() === PHP_SESSION_NONE) {
         <source src="{{ asset('sounds/result.mp3') }}" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
+    <audio id="retry-sound" preload="auto">
+        
+        <source src="{{ asset('sounds/retry.mp3') }}" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
 
     {{-- JAVASCRIPT TO PLAY THE SOUND --}}
     <script>
@@ -69,10 +74,12 @@ if (session_status() === PHP_SESSION_NONE) {
             // Find the audio element in the HTML
             const clickSound = document.getElementById('click-sound');
             const resultSound = document.getElementById('result-sound');
+            const retrySound = document.getElementById('retry-sound');
 
             // Find ALL elements on the page that have the class 'clickable-sound'
             const soundButtons = document.querySelectorAll('.clickable-sound');
             const resultButtons = document.querySelectorAll('.result-sound');
+            const retryButtons = document.querySelectorAll('.retry-sound');
 
             // Loop through each of the found elements
             soundButtons.forEach(button => {
@@ -91,6 +98,15 @@ if (session_status() === PHP_SESSION_NONE) {
                     resultSound.currentTime = 0;
                    
                     resultSound.play();
+                });
+            });
+            retryButtons.forEach(button => {
+                
+                button.addEventListener('click', () => {
+                    
+                    retrySound.currentTime = 0;
+                   
+                    retrySound.play();
                 });
             });
         });
