@@ -25,10 +25,10 @@ if (session_status() === PHP_SESSION_NONE) {
                 <li><a href="{{ route('home.main') }}">Quiz</a></li>
                 <li><a href="{{ route('library.main') }}">Library</a></li>
                 @isset($_SESSION['username'])
-                <li class="user"><a href="{{ route('user.login') }}">Profile</a></li>
+                    <li class="user"><a href="{{ route('user.login') }}">Profile</a></li>
                 @else
-                <li class="user"><a href="{{ route('user.login') }}">Login</a></li>
-                 @endisset
+                    <li class="user"><a href="{{ route('user.login') }}">Login</a></li>
+                @endisset
 
             </ul>
         </nav>
@@ -53,23 +53,27 @@ if (session_status() === PHP_SESSION_NONE) {
     <footer>
         Created by Sirithep Pukim
     </footer>
+    
     <audio id="click-sound" preload="auto">
 
         <source src="{{ asset('sounds/choice-click.mp3') }}" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
+
     <audio id="result-sound" preload="auto">
 
         <source src="{{ asset('sounds/result.mp3') }}" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
+
     <audio id="retry-sound" preload="auto">
 
         <source src="{{ asset('sounds/retry.mp3') }}" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
-<script src="{{asset('js/component.js') }}" defer></script>
-   
+
+    <script src="{{ asset('js/component.js') }}" defer></script>
+
 
 </body>
 

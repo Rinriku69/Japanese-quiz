@@ -16,10 +16,8 @@
             <h2>Answer Review</h2>
             @foreach ($answers as $answer)
                 @php
-                    // return true / false
                     $isCorrect = $answer['user_choice']['idcharacters'] === $answer['correct_answer']['idcharacters'];
                 @endphp
-                {{-- Add a 'correct' or 'incorrect' class based on the result --}}
                 <div class="answer-item {{ $isCorrect ? 'correct' : 'incorrect' }}">
                     <div class="question-character">
                         {{ $answer['correct_answer']['character'] }}
@@ -27,7 +25,6 @@
                     <div class="answer-details">
                         <p>Your Answer: <strong>{{ $answer['user_choice']['romaji'] }}</strong></p>
                         @if (!$isCorrect)
-                            {{-- Only show the correct answer if the user was wrong --}}
                             <p class="correct-answer-text">Correct Answer: <strong>{{ $answer['correct_answer']['romaji'] }}</strong></p>
                         @endif
                     </div>
@@ -39,8 +36,7 @@
         </div>
 
         <div class="results-actions">
-             {{-- The retry button should link back to the quiz start route --}}
-            <a href="{{ route('quiz.start') }}" class="btn-retry-quiz retry-sound">Retry Quiz</a>
+            <a href="{{ route('quiz.start') }}" class="btn-retry-quiz clickable-sound">Retry Quiz</a>
         </div>
     </div>
 </div>
