@@ -747,3 +747,35 @@ dialog {
     color: #000;
 }
 
+.quiz-setup-form {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Adds space between the dropdown and the button */
+}
+
+.form-group {
+    margin-bottom: 0; /* Remove default bottom margin */
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.form-control {
+    padding: 10px 15px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: #f9f9f9;
+    transition: border-color 0.2s;
+    min-width: 250px; /* Give the select box a decent width */
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #66a6ff;
+}

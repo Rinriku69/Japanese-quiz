@@ -22,7 +22,7 @@
                     <h2>Hiragana & Katakana Beginner</h2>
                     <p>A multiple-choice quiz on basic character readings.</p>
                 </div>
-                <form action="{{ route('quiz.start') }}" method="post">
+                <form action="{{ route('quiz.start') }}" method="post" class="quiz-setup-form">
                     @csrf
                    <input type="hidden" name="quiz_level" value="beginner">
                    <label for="id_range">Practice characters up to...</label>
