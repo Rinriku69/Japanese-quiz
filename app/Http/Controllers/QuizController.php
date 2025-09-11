@@ -48,10 +48,13 @@ class QuizController extends Controller
     }
 
     function beginner_quiz(): View{
-        
+       
+        $id_range = session()->get('beginner_id_range');
+   
         $answer_collect = session()->get('quiz_answers', []);
+
         $question_number = count($answer_collect) + 1;
-        $choices = $this->quiz_level(10);
+        $choices = $this->quiz_level($id_range);
         $options = $choices['options'];
         $correctAnswer = $choices['correctAnswer'];
 
@@ -60,6 +63,7 @@ class QuizController extends Controller
             'correctAnswer' => $correctAnswer,
             'question_number' => $question_number,
             'quiz_level' => 'beginner',
+            'id_range' => $id_range,
         ]);
     }
 
@@ -117,6 +121,7 @@ class QuizController extends Controller
         }
         $answer_info = $this->prepareAnswers($answers_collect);
         session()->forget('quiz_answers');
+        
 
         return view('quiz.result', [
             'score' => $score,
@@ -133,6 +138,25 @@ class QuizController extends Controller
         $data = $request->getParsedBody();
         $level = $data['quiz_level']; 
         session()->forget('quiz_answers');
+        $data_id_range = $data['id_range'] ?? 10 ;
+        $id_range = (int) $data_id_range ;
+        session()->put('beginner_id_range', $id_range);
+        
+
+        if($level == 'intermediate'){
+        return redirect()->route('quiz.intermediate');
+        }else{
+        return redirect()->route('quiz.beginner');
+        }
+    } 
+
+    public function restart(ServerRequestInterface $request):RedirectResponse
+    {
+        $data = $request->getParsedBody();
+        $level = $data['quiz_level']; 
+        session()->forget('quiz_answers');
+        
+        
 
         if($level == 'intermediate'){
         return redirect()->route('quiz.intermediate');

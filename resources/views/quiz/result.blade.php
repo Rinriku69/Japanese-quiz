@@ -35,7 +35,7 @@
             @endforeach
         </div>
         
-        <form action="{{route('quiz.start')}}" method="POST">
+        <form action="{{route('quiz.restart')}}" method="POST">
             @csrf
             <input type="hidden" name="quiz_level" value="{{$quiz_level}}">
         <div class="results-actions">

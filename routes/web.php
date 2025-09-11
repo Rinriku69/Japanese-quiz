@@ -29,6 +29,7 @@ Route::controller(QuizController::class)
     route::post('/result','result')->name('result');
     route::post('','process')->name('process');
     route::post('/start','start')->name('start');
+    route::post('/restart','restart')->name('restart');
     
     //route::post('/start','start')->name('start');
    
