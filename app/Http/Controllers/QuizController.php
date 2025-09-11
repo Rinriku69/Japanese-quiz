@@ -19,6 +19,7 @@ class QuizController extends Controller
         ->inrandomOrder()->first();
         $wrongAnswer = Character::where('idcharacters', '!=', $correctAnswer->id)
             ->where('type','=',$correctAnswer->type)
+            ->where('idcharacters','<=',$level)
             ->inrandomOrder()
             ->limit(3)
             ->get();
