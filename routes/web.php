@@ -30,8 +30,7 @@ Route::controller(QuizController::class)
     route::post('','process')->name('process');
     route::post('/start','start')->name('start');
     route::post('/restart','restart')->name('restart');
-    
-    //route::post('/start','start')->name('start');
+    route::get('/drawing','drawing_quiz')->name('drawing');
    
 });
 

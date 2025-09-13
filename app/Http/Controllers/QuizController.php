@@ -15,25 +15,26 @@ class QuizController extends Controller
 
     function quiz_level(int $level): array
     {
-        $correctAnswer = Character::where('idcharacters','<=',$level)
-        ->inrandomOrder()->first();
+        $correctAnswer = Character::where('idcharacters', '<=', $level)
+            ->inrandomOrder()->first();
         $wrongAnswer = Character::where('idcharacters', '!=', $correctAnswer->idcharacters)
-            ->where('type','=',$correctAnswer->type)
-            ->where('idcharacters','<=',$level)
+            ->where('type', '=', $correctAnswer->type)
+            ->where('idcharacters', '<=', $level)
             ->inrandomOrder()
             ->limit(3)
             ->get();
 
         $options = $wrongAnswer->push($correctAnswer)->shuffle();
 
-        $choices=[];
+        $choices = [];
         $choices['options'] = $options;
         $choices['correctAnswer'] = $correctAnswer;
         return $choices;
     }
 
-    function intermediate_quiz(): View{
-        
+    function intermediate_quiz(): View
+    {
+
         $answer_collect = session()->get('quiz_answers', []);
         $question_number = count($answer_collect) + 1;
         $choices = $this->quiz_level(92);
@@ -48,10 +49,11 @@ class QuizController extends Controller
         ]);
     }
 
-    function beginner_quiz(): View{
-       
+    function beginner_quiz(): View
+    {
+
         $id_range = session()->get('beginner_id_range');
-   
+
         $answer_collect = session()->get('quiz_answers', []);
 
         $question_number = count($answer_collect) + 1;
@@ -81,10 +83,10 @@ class QuizController extends Controller
         ];
         session()->put('quiz_answers', $answer_collect);
 
-        if($data['quiz_level'] == 'intermediate'){
-        return redirect()->route('quiz.intermediate');
-        }else{
-        return redirect()->route('quiz.beginner');
+        if ($data['quiz_level'] == 'intermediate') {
+            return redirect()->route('quiz.intermediate');
+        } else {
+            return redirect()->route('quiz.beginner');
         }
     }
 
@@ -122,7 +124,7 @@ class QuizController extends Controller
         }
         $answer_info = $this->prepareAnswers($answers_collect);
         session()->forget('quiz_answers');
-        
+
 
         return view('quiz.result', [
             'score' => $score,
@@ -134,35 +136,47 @@ class QuizController extends Controller
         ]);
     }
 
-    public function start(ServerRequestInterface $request):RedirectResponse
+    public function start(ServerRequestInterface $request): RedirectResponse
     {
         $data = $request->getParsedBody();
-        $level = $data['quiz_level']; 
+        $level = $data['quiz_level'];
         session()->forget('quiz_answers');
-        $data_id_range = $data['id_range'] ?? 10 ;
-        $id_range = (int) $data_id_range ;
+        $data_id_range = $data['id_range'] ?? 10;
+        $id_range = (int) $data_id_range;
         session()->put('beginner_id_range', $id_range);
-        
 
-        if($level == 'intermediate'){
-        return redirect()->route('quiz.intermediate');
-        }else{
-        return redirect()->route('quiz.beginner');
+
+        if ($level == 'intermediate') {
+            return redirect()->route('quiz.intermediate');
+        } else {
+            return redirect()->route('quiz.beginner');
         }
-    } 
+    }
 
-    public function restart(ServerRequestInterface $request):RedirectResponse
+    public function restart(ServerRequestInterface $request): RedirectResponse
     {
         $data = $request->getParsedBody();
-        $level = $data['quiz_level']; 
+        $level = $data['quiz_level'];
         session()->forget('quiz_answers');
-        
-        
 
-        if($level == 'intermediate'){
-        return redirect()->route('quiz.intermediate');
-        }else{
-        return redirect()->route('quiz.beginner');
+
+
+        if ($level == 'intermediate') {
+            return redirect()->route('quiz.intermediate');
+        } else {
+            return redirect()->route('quiz.beginner');
         }
-    } 
+    }
+
+    public function drawing_quiz(): View
+    {
+        // Get a random character from the database
+        $character = Character::inRandomOrder()
+        ->where('idcharacters','<=',10)
+        ->first();
+
+        return view('quiz.drawing', [
+            'characterToDraw' => $character
+        ]);
+    }
 }

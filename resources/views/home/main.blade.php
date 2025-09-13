@@ -36,6 +36,17 @@
                     <button type="submit" class="btn-start-quiz">Start Quiz</button>
                 </form>
             </div>
+            <div class="quiz-option-card">
+                <div>
+                    <h2>Hiragana & Katakana Drawing</h2>
+                    <p>A drawing quiz on basic character.</p>
+                </div>
+                <form action="{{ route('quiz.drawing') }}" method="get">
+                    @csrf
+                    
+                    <button type="submit" class="btn-start-quiz">Start Quiz</button>
+                </form>
+            </div>
            
 
 
