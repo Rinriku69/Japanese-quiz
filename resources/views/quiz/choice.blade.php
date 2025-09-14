@@ -1,19 +1,18 @@
 @extends('layouts.main', ['title' => 'Multiple Choice'])
 
 @section('content')
-  
     <button id="hint-btn" class="hint-button clickable-sound">?</button>
 
-     <dialog id="hintModal">
-    <div id="hint-modal" class="modal-overlay">
-        <div class="modal-content">
-            <span id="close-modal-btn" class="close-button">&times;</span>
-            
-            <img src="{{ asset('img/hiragana.jpg') }}" alt="Hiragana and Katakana Chart">
-            <img src="{{ asset('img/katakana.jpg') }}" alt="Hiragana and Katakana Chart">
+    <dialog id="hintModal">
+        <div id="hint-modal" class="modal-overlay">
+            <div class="modal-content">
+                <span id="close-modal-btn" class="close-button">&times;</span>
+
+                <img src="{{ asset('img/hiragana.jpg') }}" alt="Hiragana and Katakana Chart">
+                <img src="{{ asset('img/katakana.jpg') }}" alt="Hiragana and Katakana Chart">
+            </div>
         </div>
-    </div>
-     </dialog>
+    </dialog>
 
     <div class="quiz-container">
         <h1>Question : {{ $question_number }}</h1>
@@ -42,7 +41,7 @@
             <form action="{{ route('quiz.result') }}" method="POST">
                 @csrf
                 @if ($question_number >= 2)
-                    <input type="hidden" name="quiz_level" value="{{$quiz_level}}">
+                    <input type="hidden" name="quiz_level" value="{{ $quiz_level }}">
                     <button type="submit" class="btn-view-result result-sound">Finish & View Result</button>
                 @endif
             </form>

@@ -107,7 +107,7 @@ class QuizController extends Controller
         $data = $request->getParsedBody();
         $user_input= $data['romaji'];
         $user_input_id = Character::where('romaji','=',$user_input)
-                        ->firstorfail();
+                        ->first() ?? Character::where('idcharacters','=',999)->first();
         $answer_collect = session()->get('quiz_answers', []);
         $answer_collect[] = [
             'correct_answer_id' => (int) $data['correct_answer_id'],
