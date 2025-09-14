@@ -83,7 +83,7 @@ class QuizController extends Controller
         // Check if the time is up
         if (time() >= $endTime) {
             session()->forget('quiz_end_time');
-            return redirect()->route('quiz.result-text',['quiz_level' => 'text']);
+            return redirect()->route('quiz.result-text', ['quiz_level' => 'text']);
         }
 
         
@@ -171,7 +171,7 @@ class QuizController extends Controller
         }
         $answer_info = $this->prepareAnswers($answers_collect);
         session()->forget('quiz_answers');
-
+        session()->forget('quiz_end_time');
 
         return view('quiz.result', [
             'score' => $score,
@@ -244,6 +244,8 @@ class QuizController extends Controller
         } elseif($level == 'beginner') {
             return redirect()->route('quiz.beginner');}
         else{
+            $durationInSeconds = 60;
+            session()->put('quiz_end_time', now()->addSeconds($durationInSeconds)->timestamp);
             return redirect()->route('quiz.text');
         }
 
