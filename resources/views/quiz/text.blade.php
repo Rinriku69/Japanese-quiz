@@ -16,10 +16,10 @@
     <div id="overall-timer-container"
              data-time-left="{{ $timeLeft ?? 0 }}"
              data-results-url="{{ route('quiz.result-text', ['quiz_level' => 'text']) }}">
-            Time Left: <span id="timer-minutes">01</span>:<span id="timer-seconds">00</span>
+            Time Left: <span id="timer-minutes">00</span>:<span id="timer-seconds">00</span>
         </div>
 
-    <div class="quiz-container">
+    <div class="quiz-container">    
         <h1>Question : {{ $question_number }}</h1>
         <div class="quiz-question">
             <h1>{{ $correctAnswer->character }}</h1>

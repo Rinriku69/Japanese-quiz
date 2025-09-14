@@ -23,7 +23,7 @@
                         {{ $answer['correct_answer']['character'] }}
                     </div>
                     <div class="answer-details">
-                        <p>Your Answer: <strong>{{ $answer['user_choice']['romaji'] }}</strong></p>
+                        <p>Your Answer: <strong>{{ $answer['user_answer'] }}</strong></p>
                         @if (!$isCorrect)
                             <p class="correct-answer-text">Correct Answer: <strong>{{ $answer['correct_answer']['romaji'] }}</strong></p>
                         @endif
