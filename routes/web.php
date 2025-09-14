@@ -28,9 +28,11 @@ Route::controller(QuizController::class)
     route::get('/beginner','beginner_quiz')->name('beginner');
     route::post('/result','result')->name('result');
     route::post('','process')->name('process');
+    route::post('/text-process','text_process')->name('text-process');
     route::post('/start','start')->name('start');
     route::post('/restart','restart')->name('restart');
     route::get('/drawing','drawing_quiz')->name('drawing');
+    route::get('/text','text_quiz')->name('text');
    
 });
 

@@ -872,3 +872,28 @@ dialog {
     background-color: #e0e0e0;
 }
 
+.text-input-container {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.text-input-field {
+    width: 100%;
+    padding: 20px;
+    font-size: 2rem;
+    text-align: center;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.text-input-field:focus {
+    border-color: #6c5ce7;
+    box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.2);
+}
+
+/* Using .btn-action for the main submit button */
+.quiz-container form button[type="submit"] {
+    margin-top: 10px;
+}

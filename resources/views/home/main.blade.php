@@ -38,6 +38,17 @@
             </div>
             <div class="quiz-option-card">
                 <div>
+                    <h2>Hiragana & Katakana Fill quiz</h2>
+                    <p>A text quiz on basic character readings.</p>
+                </div>
+                <form action="{{ route('quiz.start') }}" method="post" class="quiz-setup-form">
+                    @csrf
+                    <input type="hidden" name="quiz_level" value="text">
+                    <button type="submit" class="btn-start-quiz">Start Quiz</button>
+                </form>
+            </div>
+            <div class="quiz-option-card">
+                <div>
                     <h2>Hiragana & Katakana Drawing</h2>
                     <p>A drawing quiz on basic character.</p>
                 </div>
