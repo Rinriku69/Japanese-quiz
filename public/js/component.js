@@ -115,3 +115,44 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 answerOverlay.classList.add('hidden'); // Also hide the answer again
             });
         });
+
+       window.addEventListener('load', () => {
+    // Find the timer container element in the HTML
+    const timerContainer = document.getElementById('overall-timer-container');
+
+    // If the timer container doesn't exist on this page, do nothing.
+    if (!timerContainer) {
+        return;
+    }
+
+    const minutesDisplay = document.getElementById('timer-minutes');
+    const secondsDisplay = document.getElementById('timer-seconds');
+
+    // Read the data passed from the Blade file
+    let totalSeconds = parseInt(timerContainer.dataset.timeLeft || '0');
+    const resultsUrl = timerContainer.dataset.resultsUrl;
+
+    const timerInterval = setInterval(() => {
+        if (totalSeconds <= 0) {
+            clearInterval(timerInterval);
+            // Use the URL we read from the data attribute
+            if (resultsUrl) {
+                window.location.href = resultsUrl;
+            }
+            return;
+        }
+
+        totalSeconds--;
+
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+
+        minutesDisplay.textContent = String(minutes).padStart(2, '0');
+        secondsDisplay.textContent = String(seconds).padStart(2, '0');
+
+        if (totalSeconds <= 10) {
+            timerContainer.classList.add('low-time');
+        }
+
+    }, 1000);
+});

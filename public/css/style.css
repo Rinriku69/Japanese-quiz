@@ -897,3 +897,22 @@ dialog {
 .quiz-container form button[type="submit"] {
     margin-top: 10px;
 }
+
+#overall-timer-container {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: 500;
+    background-color: #f0f4f8;
+    padding: 10px 20px;
+    border-radius: 50px;
+    display: inline-block;
+    border: 2px solid #e0e5ea;
+    transition: all 0.3s;
+}
+
+#overall-timer-container.low-time {
+    color: #e74c3c;
+    border-color: #e74c3c;
+    font-weight: bold;
+}

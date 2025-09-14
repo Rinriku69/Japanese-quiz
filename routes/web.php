@@ -26,7 +26,8 @@ Route::controller(QuizController::class)
 ->group(static function(): void{
     route::get('/intermediate','intermediate_quiz')->name('intermediate');
     route::get('/beginner','beginner_quiz')->name('beginner');
-    route::post('/result','result')->name('result');
+    route::get('/result','result')->name('result');
+    route::get('/result_text/{quiz_level}','result_text')->name('result-text');
     route::post('','process')->name('process');
     route::post('/text-process','text_process')->name('text-process');
     route::post('/start','start')->name('start');
@@ -57,4 +58,5 @@ Route::controller(UserController::class)
     route::post('/login','login')->name('login');
     route::post('/logout','logout')->name('logout');
 });
+
 

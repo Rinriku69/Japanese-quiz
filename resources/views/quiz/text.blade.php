@@ -12,6 +12,13 @@
         </div>
     </dialog>
 
+    
+    <div id="overall-timer-container"
+             data-time-left="{{ $timeLeft ?? 0 }}"
+             data-results-url="{{ route('quiz.result') }}">
+            Time Left: <span id="timer-minutes">01</span>:<span id="timer-seconds">00</span>
+        </div>
+
     <div class="quiz-container">
         <h1>Question : {{ $question_number }}</h1>
         <div class="quiz-question">
@@ -19,7 +26,7 @@
             <p class="kana-type">{{ $correctAnswer->type }}</p>
         </div>
 
-        <form action="{{ route('quiz.text-process') }}" method="POST">
+        <form action="{{ route('quiz.text-process') }}" method="POST" >
             @csrf
             <input type="hidden" name="correct_answer_id" value="{{ $correctAnswer->idcharacters }}">
             
@@ -35,8 +42,8 @@
         </form>
 
         <div class="view-result-container">
-            <form action="{{ route('quiz.result') }}" method="POST">
-                @csrf
+            <form action="{{ route('quiz.result-text',['quiz_level' => 'text']) }}" method="get" id="quiz-form">
+                
                 @if ($question_number >= 2)
                     <input type="hidden" name="quiz_level" value="text">
                     <button type="submit" class="btn-view-result result-sound">Finish & View Result</button>

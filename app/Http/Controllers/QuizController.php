@@ -16,10 +16,11 @@ class QuizController extends Controller
     function quiz_level(int $level): array
     {
         $correctAnswer = Character::where('idcharacters', '<=', $level)
-           
+            ->where('idcharacters','>',30)
             ->inrandomOrder()->first();
         $wrongAnswer = Character::where('idcharacters', '!=', $correctAnswer->idcharacters)
             ->where('type', '=', $correctAnswer->type)
+            ->where('idcharacters','>',30)
             ->where('idcharacters', '<=', $level)
             ->inrandomOrder()
             ->limit(3)
@@ -70,16 +71,32 @@ class QuizController extends Controller
             'id_range' => $id_range,
         ]);
     }
-    function text_quiz(): View
+    function text_quiz(): View | RedirectResponse
     {
+        $endTime = session()->get('quiz_end_time');
+
+        
+        if (!$endTime) {
+            return redirect()->route('home.main');
+        }
+
+        // Check if the time is up
+        if (time() >= $endTime) {
+            session()->forget('quiz_end_time');
+            return redirect()->route('quiz.result-text',['quiz_level' => 'text']);
+        }
+
+        
+        $timeLeft = $endTime - time();
         $answer_collect = session()->get('quiz_answers', []);
         $question_number = count($answer_collect) + 1;
-        $choices = $this->quiz_level(30);
+        $choices = $this->quiz_level(46);
         $correctAnswer = $choices['correctAnswer'];
 
         return view('quiz.text', [
             'correctAnswer' => $correctAnswer,
             'question_number' => $question_number,
+            'timeLeft' => $timeLeft,
         ]);
     }
 
@@ -140,10 +157,38 @@ class QuizController extends Controller
 
     function result(ServerRequestInterface $request): view
     {
-        $data = $request->getParsedBody();
+        $data = $request->getQueryParams();
         $answers_collect = session()->get('quiz_answers', []);
-        $quiz_level = $data['quiz_level'];
+        if(isset($data['quiz_level'])){
+        $quiz_level = $data['quiz_level'];}
+        
 
+        $score = 0;
+        foreach ($answers_collect as $answer) {
+            if ($answer['correct_answer_id'] === $answer['choice_id']) {
+                $score++;
+            }
+        }
+        $answer_info = $this->prepareAnswers($answers_collect);
+        session()->forget('quiz_answers');
+
+
+        return view('quiz.result', [
+            'score' => $score,
+            'total' => count($answers_collect),
+            'answers' => $answer_info,
+            'quiz_level' => $quiz_level,
+
+
+        ]);
+    }
+    function result_text(ServerRequestInterface $request,string $quiz_level): view
+    {
+        $data = $request->getQueryParams();
+        $answers_collect = session()->get('quiz_answers', []);
+        if(isset($data['quiz_level'])){
+        $quiz_level = $data['quiz_level'];}
+        
 
         $score = 0;
         foreach ($answers_collect as $answer) {
@@ -180,6 +225,8 @@ class QuizController extends Controller
         } elseif ($level == 'beginner') {
             return redirect()->route('quiz.beginner');
         }else{
+            $durationInSeconds = 60;
+            session()->put('quiz_end_time', now()->addSeconds($durationInSeconds)->timestamp);
             return redirect()->route('quiz.text');
         }
     }
@@ -205,7 +252,7 @@ class QuizController extends Controller
 
     public function drawing_quiz(): View
     {
-        // Get a random character from the database
+        
         $character = Character::inRandomOrder()
         ->where('idcharacters','<=',30)
         ->first();
@@ -213,5 +260,18 @@ class QuizController extends Controller
         return view('quiz.drawing', [
             'characterToDraw' => $character
         ]);
+    }
+
+    public function start_text_quiz(): RedirectResponse
+    {
+        // 1. Clear any previous quiz data
+        session()->forget('quiz_answers');
+
+        // 2. Set the quiz duration and store the END time in the session
+        $durationInSeconds = 60;
+        session()->put('quiz_end_time', now()->addSeconds($durationInSeconds)->timestamp);
+
+        // 3. Redirect to the first question
+        return redirect()->route('quiz.text'); // Assuming 'quiz.text' is the route for your text_input view
     }
 }
