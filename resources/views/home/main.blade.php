@@ -27,10 +27,14 @@
                    <input type="hidden" name="quiz_level" value="beginner">
                    <label for="id_range">Practice characters up to...</label>
                 <select name="id_range" id="id_range" class="form-control">
-                    <option value="10">The first 10 (あ to こ)</option>
-                    <option value="20">The first 20 (あ to と)</option>
-                    <option value="30">The first 30 (あ to の)</option>
+                    <option value="10">The first 10 of Hiragana(あ to こ)</option>
+                    <option value="20">The first 20 of Hiragana(あ to と)</option>
+                    <option value="30">The first 30 of Hiragana(あ to の)</option>
                     <option value="46">All Hiragana (あ to ん)</option>
+                    <option value="56">The first 10 of Katakana</option>
+                    <option value="66">The first 20 of Katakana</option>
+                    <option value="76">The first 30 of Katakana</option>
+                    <option value="92">All Katakana</option>
                 </select>
                 </label>
                     <button type="submit" class="btn-start-quiz">Start Quiz</button>

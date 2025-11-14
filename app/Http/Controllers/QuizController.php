@@ -13,16 +13,16 @@ class QuizController extends Controller
 
 
 
-    function quiz_level(int $level): array
+    function quiz_level(int $minimum, int $max): array
     {
-        $correctAnswer = Character::where('idcharacters', '<=', $level+46)
-            ->where('idcharacters', '>', 46)
+        $correctAnswer = Character::where('idcharacters', '<=', $max)
+            ->where('idcharacters', '>=', $minimum)
             ->inrandomOrder()->first();
 
         $wrongAnswer = Character::where('idcharacters', '!=', $correctAnswer->idcharacters)
             ->where('type', '=', $correctAnswer->type)
-            ->where('idcharacters', '<=', $level+46)
-            ->where('idcharacters', '>', 46)
+            ->where('idcharacters', '<=', $max)
+            ->where('idcharacters', '>=', $minimum)
             ->inrandomOrder()
             ->limit(3)
             ->get();
@@ -40,10 +40,10 @@ class QuizController extends Controller
 
         $answer_collect = session()->get('quiz_answers', []);
         $question_number = count($answer_collect) + 1;
-        $choices = $this->quiz_level(92);
+        $choices = $this->quiz_level(1, 92);
         $options = $choices['options'];
         $correctAnswer = $choices['correctAnswer']->idcharacters;
-        session()->put('correctAnswer',$correctAnswer);
+        session()->put('correctAnswer', $correctAnswer);
 
         return view('hira-kata.intermediate', [
             'question' => $choices['correctAnswer']->character,
@@ -62,20 +62,26 @@ class QuizController extends Controller
         $answer_collect = session()->get('quiz_answers', []);
 
         $question_number = count($answer_collect) + 1;
-        $choices = $this->quiz_level($id_range);
+        if ($id_range <= 46) {
+            $minimum = 1;
+        } else {
+            $minimum = 47;
+        }
+        $choices = $this->quiz_level($minimum, $id_range);
         $options = $choices['options'];
         $correctAnswer = $choices['correctAnswer']->idcharacters;
-        session()->put('correctAnswer',$correctAnswer);
+        session()->put('correctAnswer', $correctAnswer);
 
         return view('hira-kata.beginner', [
             'options' => $options,
-             'question' => $choices['correctAnswer']->character,
+            'question' => $choices['correctAnswer']->character,
             'question_type' => $choices['correctAnswer']->type,
             'question_number' => $question_number,
             'quiz_level' => 'beginner',
             'id_range' => $id_range,
         ]);
     }
+
     function text_quiz(): View | RedirectResponse
     {
         $endTime = session()->get('quiz_end_time');
@@ -92,9 +98,9 @@ class QuizController extends Controller
         $timeLeft = $endTime - time();
         $answer_collect = session()->get('quiz_answers', []);
         $question_number = count($answer_collect) + 1;
-        $choices = $this->quiz_level(10);
+        $choices = $this->quiz_level(1, 92);
         $correctAnswer = $choices['correctAnswer'];
-   
+
 
         return view('quiz.text', [
             'correctAnswer' => $correctAnswer,
@@ -103,9 +109,6 @@ class QuizController extends Controller
         ]);
     }
 
-
-
-
     function process(ServerRequestInterface $request): RedirectResponse
     {
         $data = $request->getParsedBody();
@@ -113,10 +116,10 @@ class QuizController extends Controller
         $user_answer = Character::where('idcharacters', '=', $data['choice'])
             ->first();
         $user_input = $user_answer->romaji;
-        $correctAnswer = session()->get('correctAnswer',[]);
+        $correctAnswer = session()->get('correctAnswer', []);
         /* dd($correctAnswer); */
         $answer_collect[] = [
-            'correct_answer_id' => (int)$correctAnswer ,
+            'correct_answer_id' => (int)$correctAnswer,
             'choice_id' => (int) $data['choice'],
             'user_input' => (string) $user_input
         ];
@@ -133,10 +136,10 @@ class QuizController extends Controller
     {
         $data = $request->getParsedBody();
         $user_input = $data['romaji'];
-        $user_input_id = Character::where('romaji', '=', $user_input)->where('idcharacters','>',46)
+        $user_input_id = Character::where('romaji', '=', $user_input)->where('idcharacters', '>', 46)
             ->first() ?? Character::where('idcharacters', '=', 999)->first();
         $answer_collect = session()->get('quiz_answers', []);
-      
+
         $answer_collect[] = [
             'correct_answer_id' => (int) $data['correct_answer_id'],
             'choice_id' => (int) $user_input_id->idcharacters,
@@ -162,8 +165,6 @@ class QuizController extends Controller
         return $enrichedItems;
     }
 
-
-
     function result(ServerRequestInterface $request): view
     {
         $data = $request->getQueryParams();
@@ -171,7 +172,6 @@ class QuizController extends Controller
         if (isset($data['quiz_level'])) {
             $quiz_level = $data['quiz_level'];
         }
-
 
         $score = 0;
         foreach ($answers_collect as $answer) {
@@ -182,8 +182,6 @@ class QuizController extends Controller
         $answer_info = $this->prepareAnswers($answers_collect);
         session()->forget('quiz_answers');
         session()->forget('quiz_end_time');
-
-
 
         return view('quiz.result', [
             'score' => $score,
