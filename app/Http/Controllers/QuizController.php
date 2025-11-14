@@ -15,13 +15,14 @@ class QuizController extends Controller
 
     function quiz_level(int $level): array
     {
-        $correctAnswer = Character::where('idcharacters', '<=', $level)
-            
+        $correctAnswer = Character::where('idcharacters', '<=', $level+46)
+            ->where('idcharacters', '>', 46)
             ->inrandomOrder()->first();
+
         $wrongAnswer = Character::where('idcharacters', '!=', $correctAnswer->idcharacters)
             ->where('type', '=', $correctAnswer->type)
-            
-            ->where('idcharacters', '<=', $level)
+            ->where('idcharacters', '<=', $level+46)
+            ->where('idcharacters', '>', 46)
             ->inrandomOrder()
             ->limit(3)
             ->get();
@@ -41,11 +42,13 @@ class QuizController extends Controller
         $question_number = count($answer_collect) + 1;
         $choices = $this->quiz_level(92);
         $options = $choices['options'];
-        $correctAnswer = $choices['correctAnswer'];
+        $correctAnswer = $choices['correctAnswer']->idcharacters;
+        session()->put('correctAnswer',$correctAnswer);
 
         return view('hira-kata.intermediate', [
+            'question' => $choices['correctAnswer']->character,
+            'question_type' => $choices['correctAnswer']->type,
             'options' => $options,
-            'correctAnswer' => $correctAnswer,
             'question_number' => $question_number,
             'quiz_level' => 'intermediate',
         ]);
@@ -61,11 +64,13 @@ class QuizController extends Controller
         $question_number = count($answer_collect) + 1;
         $choices = $this->quiz_level($id_range);
         $options = $choices['options'];
-        $correctAnswer = $choices['correctAnswer'];
+        $correctAnswer = $choices['correctAnswer']->idcharacters;
+        session()->put('correctAnswer',$correctAnswer);
 
         return view('hira-kata.beginner', [
             'options' => $options,
-            'correctAnswer' => $correctAnswer,
+             'question' => $choices['correctAnswer']->character,
+            'question_type' => $choices['correctAnswer']->type,
             'question_number' => $question_number,
             'quiz_level' => 'beginner',
             'id_range' => $id_range,
@@ -75,23 +80,21 @@ class QuizController extends Controller
     {
         $endTime = session()->get('quiz_end_time');
 
-
         if (!$endTime) {
             return redirect()->route('home.main');
         }
 
-        // Check if the time is up
         if (time() >= $endTime) {
             session()->forget('quiz_end_time');
             return redirect()->route('quiz.result-text', ['quiz_level' => 'text']);
         }
 
-
         $timeLeft = $endTime - time();
         $answer_collect = session()->get('quiz_answers', []);
         $question_number = count($answer_collect) + 1;
-        $choices = $this->quiz_level(46);
+        $choices = $this->quiz_level(10);
         $correctAnswer = $choices['correctAnswer'];
+   
 
         return view('quiz.text', [
             'correctAnswer' => $correctAnswer,
@@ -107,11 +110,13 @@ class QuizController extends Controller
     {
         $data = $request->getParsedBody();
         $answer_collect = session()->get('quiz_answers', []);
-        $user_answer = Character::where('idcharacters','=',$data['choice'])
-        ->first();
+        $user_answer = Character::where('idcharacters', '=', $data['choice'])
+            ->first();
         $user_input = $user_answer->romaji;
+        $correctAnswer = session()->get('correctAnswer',[]);
+        /* dd($correctAnswer); */
         $answer_collect[] = [
-            'correct_answer_id' => (int) $data['correct_answer_id'],
+            'correct_answer_id' => (int)$correctAnswer ,
             'choice_id' => (int) $data['choice'],
             'user_input' => (string) $user_input
         ];
@@ -123,13 +128,15 @@ class QuizController extends Controller
             return redirect()->route('quiz.beginner');
         }
     }
+
     function text_process(ServerRequestInterface $request): RedirectResponse
     {
         $data = $request->getParsedBody();
         $user_input = $data['romaji'];
-        $user_input_id = Character::where('romaji', '=', $user_input)
+        $user_input_id = Character::where('romaji', '=', $user_input)->where('idcharacters','>',46)
             ->first() ?? Character::where('idcharacters', '=', 999)->first();
         $answer_collect = session()->get('quiz_answers', []);
+      
         $answer_collect[] = [
             'correct_answer_id' => (int) $data['correct_answer_id'],
             'choice_id' => (int) $user_input_id->idcharacters,
@@ -146,10 +153,7 @@ class QuizController extends Controller
 
         foreach ($items as $item) {
             $enrichedItems[] = [
-
                 'correct_answer' => Character::find($item['correct_answer_id']),
-
-
                 'user_choice' => Character::find($item['choice_id']),
                 'user_answer' => $item['user_input']
             ];
@@ -178,15 +182,15 @@ class QuizController extends Controller
         $answer_info = $this->prepareAnswers($answers_collect);
         session()->forget('quiz_answers');
         session()->forget('quiz_end_time');
-        
-        
+
+
 
         return view('quiz.result', [
             'score' => $score,
             'total' => count($answers_collect),
             'answers' => $answer_info,
             'quiz_level' => $quiz_level,
-            
+
 
 
         ]);
@@ -208,7 +212,7 @@ class QuizController extends Controller
             }
         }
         $answer_info = $this->prepareAnswers($answers_collect);
-      
+
         session()->forget('quiz_answers');
 
 
@@ -217,7 +221,7 @@ class QuizController extends Controller
             'total' => count($answers_collect),
             'answers' => $answer_info,
             'quiz_level' => $quiz_level,
-            
+
 
         ]);
     }
@@ -266,14 +270,12 @@ class QuizController extends Controller
     {
 
         $character = Character::inRandomOrder()
-            ->where('idcharacters', '<=', 46)
-           
+            ->where('idcharacters', '>', 46)
+            ->where('idcharacters', '<=', 56)
             ->first();
 
         return view('quiz.drawing', [
             'characterToDraw' => $character
         ]);
     }
-
-    
 }

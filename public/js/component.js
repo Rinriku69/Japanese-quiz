@@ -22,6 +22,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
     closeButton.addEventListener('click', () => {
         myModal.close();
     });
+    myModal.addEventListener('click', (event) => {
+        if (event.target === myModal) {
+            myModal.close();
+        }
+    });
 
     // Loop through each of the found elements
     soundButtons.forEach(button => {
