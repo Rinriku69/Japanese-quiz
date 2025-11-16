@@ -22,14 +22,12 @@
     <div class="quiz-container">    
         <h1>Question : {{ $question_number }}</h1>
         <div class="quiz-question">
-            <h1>{{ $correctAnswer->character }}</h1>
-            <p class="kana-type">{{ $correctAnswer->type }}</p>
+            <h1>{{ $question }}</h1>
+            <p class="kana-type">{{ $question_type }}</p>
         </div>
 
         <form action="{{ route('quiz.text-process') }}" method="POST" >
             @csrf
-            <input type="hidden" name="correct_answer_id" value="{{ $correctAnswer->idcharacters }}">
-            
             <input type="hidden" name="level" value="text">
 
             <div class="text-input-container">

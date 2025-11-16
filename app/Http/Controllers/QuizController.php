@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class QuizController extends Controller
 {
@@ -98,12 +99,17 @@ class QuizController extends Controller
         $timeLeft = $endTime - time();
         $answer_collect = session()->get('quiz_answers', []);
         $question_number = count($answer_collect) + 1;
-        $choices = $this->quiz_level(1, 92);
-        $correctAnswer = $choices['correctAnswer'];
+        $choices = $this->quiz_level(1, 56);
+        $correctAnswer = $choices['correctAnswer']->idcharacters;
+        $question = $choices['correctAnswer']->character;
+        $question_type = $choices['correctAnswer']->type;
+        session()->put('correctAnswer', $correctAnswer);
+        session()->put('question_type', $question_type);
 
 
         return view('quiz.text', [
-            'correctAnswer' => $correctAnswer,
+            'question' => $question,
+            'question_type' => $question_type,
             'question_number' => $question_number,
             'timeLeft' => $timeLeft,
         ]);
@@ -136,12 +142,17 @@ class QuizController extends Controller
     {
         $data = $request->getParsedBody();
         $user_input = $data['romaji'];
-        $user_input_id = Character::where('romaji', '=', $user_input)->where('idcharacters', '>', 46)
-            ->first() ?? Character::where('idcharacters', '=', 999)->first();
+        $correctAnswerID = session()->get('correctAnswer',[]);
+        $question_type = session()->get('question_type',[]);
+        $user_input_id = Character::where('romaji', '=', $user_input)
+        ->where('type',$question_type)
+        ->first() ?? Character::where('idcharacters', '=', 999)->first();
         $answer_collect = session()->get('quiz_answers', []);
+        session()->forget('correctAnswer');
+        session()->forget('question_type');
 
         $answer_collect[] = [
-            'correct_answer_id' => (int) $data['correct_answer_id'],
+            'correct_answer_id' => (int) $correctAnswerID,
             'choice_id' => (int) $user_input_id->idcharacters,
             'user_input' => (string) $user_input
         ];
