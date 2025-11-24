@@ -99,7 +99,7 @@ class QuizController extends Controller
         $timeLeft = $endTime - time();
         $answer_collect = session()->get('quiz_answers', []);
         $question_number = count($answer_collect) + 1;
-        $choices = $this->quiz_level(1, 56);
+        $choices = $this->quiz_level(47, 66);
         $correctAnswer = $choices['correctAnswer']->idcharacters;
         $question = $choices['correctAnswer']->character;
         $question_type = $choices['correctAnswer']->type;
@@ -280,7 +280,7 @@ class QuizController extends Controller
 
         $character = Character::inRandomOrder()
             ->where('idcharacters', '>', 46)
-            ->where('idcharacters', '<=', 56)
+            ->where('idcharacters', '<=', 66)
             ->first();
 
         return view('quiz.drawing', [
