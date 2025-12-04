@@ -1,61 +1,111 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Japanese Quiz App 🇯🇵
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+![Laravel](https://img.shields.io/badge/Laravel-11-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-00000F?style=for-the-badge&logo=mysql&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 
-## About Laravel
+**Japanese Quiz** is a personalized web application designed to accelerate language acquisition through active recall and unlimited practice. Built with **Laravel**, this project allows users to practice Japanese vocabulary and writing through various interactive quiz modes.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+![Home Banner](public/img/home.png)
+*(Replace with a screenshot of your actual application dashboard)*
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 💡 The Inspiration: "Learning by Building"
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+> *"I believe the best way to learn is through trial and error."*
 
-## Learning Laravel
+Originally developed as a personal tool to fill gaps in my own Japanese studies, this project addresses the limitations of standard language apps. I needed a platform where I could:
+1.  **Drill specific weak points** without restrictions.
+2.  **Customize the content** (Vocab/Kanji) based on what I was actually learning.
+3.  **Practice writing** (Drawing mode) directly in the browser.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+This project represents my journey as a **Self-Learner**, combining my interest in programming with my passion for languages.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## 🌟 Key Features
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+* **🎨 Drawing Quiz:** A unique feature allowing users to practice writing Hiragana, Katakana, or Kanji directly on the screen (Canvas integration).
+* **📝 Multiple Quiz Modes:**
+    * **Multiple Choice:** Rapid-fire vocabulary testing.
+    * **Text Input:** Test spelling and precise recall.
+    * **Drawing:** Test stroke order and character memory.
+* **📚 Custom Library:** Users can manage their own database of Words and Characters (CRUD functionality via `LibraryController`).
+* **🗣️ Interactive Feedback:** Audio cues (Correct/Incorrect sounds) to reinforce learning.
+* **🔰 Proficiency Levels:** Organized content for Beginner (Hiragana/Katakana) to Intermediate levels.
 
-## Laravel Sponsors
+## 🛠️ Tech Stack
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+* **Framework:** Laravel 11
+* **Frontend:** Blade Templates, Custom JavaScript (for Drawing/Canvas logic), CSS
+* **Database:** MySQL
+* **Assets:** Audio integration for quiz feedback
 
-### Premium Partners
+## 🚀 Installation & Setup
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Since the database migrations and seeders are already prepared, setting up the project is straightforward.
 
-## Contributing
+1.  **Clone the Repository**
+    ```bash
+    git clone [https://github.com/rinriku69/japanese-quiz.git](https://github.com/rinriku69/japanese-quiz.git)
+    cd japanese-quiz
+    ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+2.  **Install PHP Dependencies**
+    ```bash
+    composer install
+    ```
 
-## Code of Conduct
+3.  **Install Frontend Dependencies**
+    ```bash
+    npm install
+    npm run build
+    ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+4.  **Configure Environment**
+    * Copy the `.env.example` file:
+        ```bash
+        cp .env.example .env
+        ```
+    * Edit `.env` to match your database credentials:
+        ```env
+        DB_CONNECTION=mysql
+        DB_HOST=127.0.0.1
+        DB_PORT=3306
+        DB_DATABASE=japanese_quiz
+        DB_USERNAME=root
+        DB_PASSWORD=
+        ```
 
-## Security Vulnerabilities
+5.  **Generate App Key**
+    ```bash
+    php artisan key:generate
+    ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+6.  **Database Setup (Important)**
+    * Run migrations and seeders to populate the database with initial Japanese characters and vocabulary:
+    ```bash
+    php artisan migrate --seed
+    ```
 
-## License
+7.  **Run the Server**
+    ```bash
+    php artisan serve
+    ```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+8.  **Start Learning**
+    * Visit `http://localhost:8000` in your browser.
+
+## 📂 Project Structure Highlights
+
+* `app/Http/Controllers/QuizController.php`: Handles the logic for generating random quizzes and checking answers.
+* `app/Http/Controllers/LibraryController.php`: Manages the user's vocabulary list.
+* `resources/views/quiz/`: Contains the blade files for different quiz types (drawing, choice, text).
+* `public/js/component.js`: Contains the JavaScript logic for the drawing canvas and interactivity.
+
+## 🤝 Contributing
+
+This is a personal portfolio project, but suggestions are welcome!
+1.  Fork the repo.
+2.  Create a feature branch.
+3.  Submit a Pull Request.
+
+---
+**Developed by [Your Name]**
