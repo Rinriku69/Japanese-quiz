@@ -7,7 +7,7 @@
 **Japanese Quiz** is a personalized web application designed to accelerate language acquisition through active recall and unlimited practice. Built with **Laravel**, this project allows users to practice Japanese vocabulary and writing through various interactive quiz modes.
 
 ![Home Banner](public/img/home.png)
-*(Replace with a screenshot of your actual application dashboard)*
+
 
 ## 💡 The Inspiration: "Learning by Building"
 
