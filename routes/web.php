@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 use PhpParser\Node\Expr\Cast\Void_;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home.main');
 });
 
 
