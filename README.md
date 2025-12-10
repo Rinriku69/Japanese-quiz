@@ -108,4 +108,4 @@ This is a personal portfolio project, but suggestions are welcome!
 3.  Submit a Pull Request.
 
 ---
-**Developed by [Your Name]**
+**Developed by Rinriku69**
