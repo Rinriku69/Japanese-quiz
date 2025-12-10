@@ -33,7 +33,10 @@ Route::controller(QuizController::class)
     route::post('/start','start')->name('start');
     route::post('/restart','restart')->name('restart');
     route::get('/drawing','drawing_quiz')->name('drawing');
+    route::get('/drawing','drawing_quiz')->name('drawing');
     route::get('/text','text_quiz')->name('text');
+    route::get('/word-text','word_text_quiz')->name('word-text');
+    route::post('/word-text-process','process_word_text_quiz')->name('word-text-process');
    
 });
 
@@ -43,6 +46,10 @@ Route::controller(LibraryController::class)
 ->group(static function(): void{
     route::get('/create','add_characters')->name('add_characters');
     route::post('/create','create')->name('create');
+    route::get('/create-word','add_word')->name('add_word');
+    route::get('/create-word','add_word')->name('add_word');
+    route::post('/create-word','store_word')->name('store_word');
+    route::get('/words','show_words')->name('words');
     route::get('/characters','show_characters')->name('characters');
     route::get('','library')->name('main');
 });

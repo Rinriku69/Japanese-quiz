@@ -62,6 +62,17 @@
                     <button type="submit" class="btn-start-quiz">Start Quiz</button>
                 </form>
             </div>
+
+            <div class="quiz-option-card">
+                <div>
+                    <h2>Word Meaning Quiz</h2>
+                    <p>Test your knowledge of Japanese words.</p>
+                </div>
+                <form action="{{ route('quiz.word-text') }}" method="get">
+                    @csrf
+                    <button type="submit" class="btn-start-quiz">Start Quiz</button>
+                </form>
+            </div>
            
 
 

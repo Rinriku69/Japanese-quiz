@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Character;
+use App\Models\Word;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -161,6 +162,54 @@ class QuizController extends Controller
         return redirect()->route('quiz.text');
     }
 
+    function word_text_quiz(): View
+    {
+        $answer_collect = session()->get('quiz_answers', []);
+        $question_number = count($answer_collect) + 1;
+
+        $word = Word::inRandomOrder()->first();
+        
+        // Randomly choose between Kanji (if exists) or Hiragana
+        $question = $word->word_hiragana;
+        if (!empty($word->word_kanji)) {
+            if (rand(0, 1) === 1) {
+                $question = $word->word_kanji;
+            }
+        }
+
+        session()->put('correctAnswer', $word->id);
+        session()->put('question_type', 'word');
+
+        return view('quiz.word_text', [
+            'question' => $question,
+            'question_number' => $question_number,
+        ]);
+    }
+
+    function process_word_text_quiz(ServerRequestInterface $request): RedirectResponse
+    {
+        $data = $request->getParsedBody();
+        $user_input = trim($data['meaning']);
+        
+        $wordId = session()->get('correctAnswer');
+        $word = Word::find($wordId);
+        
+        $isCorrect = strcasecmp($user_input, $word->meaning) === 0;
+
+        $answer_collect = session()->get('quiz_answers', []);
+        
+        $answer_collect[] = [
+            'correct_answer_id' => (int) $wordId,
+            'choice_id' => $isCorrect ? (int) $wordId : -1, // Use -1 or distinct logic for wrong answers in word quiz if needed, relying on ID match for score
+            'user_input' => (string) $user_input,
+            'correct_meaning' => $word->meaning // Store for result display if needed
+        ];
+        
+        session()->put('quiz_answers', $answer_collect);
+
+        return redirect()->route('quiz.word-text');
+    }
+
     public function prepareAnswers(array $items): array
     {
         $enrichedItems = [];
@@ -220,7 +269,12 @@ class QuizController extends Controller
                 $score++;
             }
         }
-        $answer_info = $this->prepareAnswers($answers_collect);
+        
+        if ($quiz_level === 'word' || $quiz_level === 'word-text') {
+            $answer_info = $this->prepareWordAnswers($answers_collect);
+        } else {
+            $answer_info = $this->prepareAnswers($answers_collect);
+        }
 
         session()->forget('quiz_answers');
 
@@ -232,6 +286,49 @@ class QuizController extends Controller
             'quiz_level' => $quiz_level,
 
 
+        ]);
+    }
+
+    public function prepareWordAnswers(array $items): array
+    {
+        $enrichedItems = [];
+
+        foreach ($items as $item) {
+            $correctWord = Word::find($item['correct_answer_id']);
+            $enrichedItems[] = [
+                'correct_answer' => $correctWord,
+                'user_choice_id' => $item['choice_id'], // This will be the correct word ID if correct, or -1 if wrong
+                'user_answer' => $item['user_input'],
+                'correct_meaning' => $item['correct_meaning'],
+                'is_correct' => ($item['correct_answer_id'] === $item['choice_id'])
+            ];
+        }
+
+        return $enrichedItems;
+    }
+
+    function result_word_text(ServerRequestInterface $request): view
+    {
+        $answers_collect = session()->get('quiz_answers', []);
+        $quiz_level = 'word-text'; // Explicitly set for word quiz results
+
+        $score = 0;
+        foreach ($answers_collect as $answer) {
+            if ($answer['correct_answer_id'] === $answer['choice_id']) {
+                $score++;
+            }
+        }
+        $answer_info = $this->prepareWordAnswers($answers_collect);
+
+        session()->forget('quiz_answers');
+        session()->forget('correctAnswer'); // Clear any lingering word ID
+        session()->forget('question_type'); // Clear question type
+
+        return view('quiz.result', [
+            'score' => $score,
+            'total' => count($answers_collect),
+            'answers' => $answer_info,
+            'quiz_level' => $quiz_level,
         ]);
     }
 
@@ -268,6 +365,8 @@ class QuizController extends Controller
             return redirect()->route('quiz.intermediate');
         } elseif ($level == 'beginner') {
             return redirect()->route('quiz.beginner');
+        } elseif ($level == 'word' || $level == 'word-text') {
+            return redirect()->route('quiz.word-text');
         } else {
             $durationInSeconds = 120;
             session()->put('quiz_end_time', now()->addSeconds($durationInSeconds)->timestamp);

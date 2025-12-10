@@ -16,16 +16,26 @@
             <h2>Answer Review</h2>
             @foreach ($answers as $answer)
                 @php
-                    $isCorrect = $answer['user_choice']['idcharacters'] === $answer['correct_answer']['idcharacters'];
+                    if (isset($answer['is_correct'])) {
+                         // Word Quiz logic
+                        $isCorrect = $answer['is_correct'];
+                        $questionText = $answer['correct_answer']['word_kanji'] ?? $answer['correct_answer']['word_hiragana'];
+                        $correctText = $answer['correct_answer']['meaning'];
+                    } else {
+                        // Character Quiz logic
+                        $isCorrect = $answer['user_choice']['idcharacters'] === $answer['correct_answer']['idcharacters'];
+                        $questionText = $answer['correct_answer']['character'];
+                        $correctText = $answer['correct_answer']['romaji'];
+                    }
                 @endphp
                 <div class="answer-item {{ $isCorrect ? 'correct' : 'incorrect' }}">
                     <div class="question-character">
-                        {{ $answer['correct_answer']['character'] }}
+                        {{ $questionText }}
                     </div>
                     <div class="answer-details">
                         <p>Your Answer: <strong>{{ $answer['user_answer'] }}</strong></p>
                         @if (!$isCorrect)
-                            <p class="correct-answer-text">Correct Answer: <strong>{{ $answer['correct_answer']['romaji'] }}</strong></p>
+                            <p class="correct-answer-text">Correct Answer: <strong>{{ $correctText }}</strong></p>
                         @endif
                     </div>
                     <div class="answer-icon">
