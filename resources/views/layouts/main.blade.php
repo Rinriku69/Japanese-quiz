@@ -31,10 +31,10 @@
         </nav>
         <div class="user-actions">
             @auth
-                <span class="username">Currently Log in as : {{ Auth::user()->name }}</span>
-                <form action="{{ route('user.logout') }}" method="post">
+                <span class="username">User: {{ Auth::user()->name }}</span>
+                <form action="{{ route('user.logout') }}" method="post" style="display:inline;">
                     @csrf
-                    <button type="submit">Logout</button>
+                    <button type="submit" class="btn-logout">Logout</button>
                 </form>
             @endauth
         </div>

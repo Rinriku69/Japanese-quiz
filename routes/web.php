@@ -65,6 +65,8 @@ Route::controller(UserController::class)
     route::post('/login','login')->name('login');
     route::post('/logout','logout')->name('logout');
     route::get('/profile','profile')->name('profile')->middleware('auth');
+    route::get('/attempt/{id}', 'show_attempt')->name('attempt.show')->middleware('auth');
+    route::delete('/attempt/{id}', 'destroy_attempt')->name('attempt.destroy')->middleware('auth');
 });
 
 

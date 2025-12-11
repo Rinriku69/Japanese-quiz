@@ -25,6 +25,7 @@
                         <th>Score</th>
                         <th>Total</th>
                         <th>Result</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -39,6 +40,15 @@
                                 $percentage = ($attempt->total_questions > 0) ? ($attempt->score / $attempt->total_questions) * 100 : 0;
                             @endphp
                             {{ number_format($percentage, 0) }}%
+                        </td>
+                        <td>
+                            <a href="{{ route('user.attempt.show', $attempt->id) }}" class="btn-sm btn-view">View</a>
+                            
+                            <form action="{{ route('user.attempt.destroy', $attempt->id) }}" method="POST" onsubmit="return confirm('Delete this record?');" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn-sm btn-delete-icon" title="Delete">&times;</button>
+                            </form>
                         </td>
                     </tr>
                     @endforeach
@@ -86,6 +96,31 @@
     .no-history {
         color: #777;
         font-style: italic;
+    }
+    .btn-sm {
+        padding: 4px 8px;
+        font-size: 0.85rem;
+        border-radius: 4px;
+        text-decoration: none;
+        display: inline-block;
+        margin-right: 5px;
+    }
+    .btn-view {
+        background-color: #4a90e2;
+        color: white;
+    }
+    .btn-delete-icon {
+        background-color: #ffcccc;
+        color: #d9534f;
+        border: none;
+        border-radius: 4px;
+        padding: 4px 8px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+    .btn-delete-icon:hover {
+        background-color: #d9534f;
+        color: white;
     }
 </style>
 @endsection

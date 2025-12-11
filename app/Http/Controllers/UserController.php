@@ -78,4 +78,28 @@ class UserController extends Controller
         ]);
     }
 
+    function show_attempt($id): View|RedirectResponse
+    {
+        $attempt = \App\Models\QuizAttempt::with('answers')->find($id);
+
+        if (!$attempt || $attempt->user_id !== Auth::id()) {
+            return redirect()->route('user.profile')->with('error', 'Attempt not found or unauthorized.');
+        }
+
+        return view('users.attempt_detail', [
+            'attempt' => $attempt
+        ]);
+    }
+
+    function destroy_attempt($id): RedirectResponse
+    {
+        $attempt = \App\Models\QuizAttempt::find($id);
+
+        if ($attempt && $attempt->user_id === Auth::id()) {
+            $attempt->delete();
+        }
+
+        return redirect()->route('user.profile')->with('success', 'Quiz attempt deleted.');
+    }
+
 }
