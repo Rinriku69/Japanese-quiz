@@ -43,31 +43,39 @@ class UserController extends Controller
             return redirect()->route('user.login_form', ['message' => 'Name and password are required.']);
         }
 
-        $user_data = User::where('name', $credentials['name'])->first();
-
-        // 5. Check if the user exists and the password is correct using Hash::check().
-        if ($user_data && Hash::check($credentials['password'], $user_data->password)) {
-            // 6. Manually start and set the session.
-            // Laravel middleware usually handles session_start(), but we do it here to be explicit.
-            if (session_status() === PHP_SESSION_NONE) {
-                session_start();
-            }
-            $_SESSION['username'] = $user_data->name;
-
+        if (Auth::attempt(['name' => $credentials['name'], 'password' => $credentials['password']])) {
+            $request = request(); // Get global request helper since ServerRequestInterface doesn't have session() easily accessible in this context without conversion or dependency injection of Illuminate Request
+            $request->session()->regenerate();
+ 
             return redirect()->route('home.main');
-        } else {
-            // For security, use a generic error message.
-            return redirect()->route('user.login_form', ['message' => 'Login failed']);
         }
+
+        // For security, use a generic error message.
+        return redirect()->route('user.login_form', ['message' => 'Login failed']);
 
     }
 
     function logout() : RedirectResponse{
-        session_start();
-        session_destroy();
-        session_unset();
+        Auth::logout();
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
         return redirect()->route('home.main');
     }
 
+
+    function profile(): View|RedirectResponse {
+        $user = Auth::user();
+        if (!$user) {
+             return redirect()->route('user.login_form'); 
+        }
+        
+        // Eager load quiz attempts ordered by latest
+        $attempts = $user->quizAttempts()->orderBy('created_at', 'desc')->get();
+
+        return view('users.profile', [
+            'user' => $user,
+            'attempts' => $attempts
+        ]);
+    }
 
 }

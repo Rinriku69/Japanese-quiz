@@ -9,11 +9,66 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Illuminate\Support\Facades\Auth;
+use App\Models\QuizAttempt;
+use App\Models\QuizAnswer;
+use Illuminate\Support\Facades\Log;
 
 class QuizController extends Controller
 {
 
 
+
+
+    private function saveAttempt(string $quizType, array $answers, int $score)
+    {
+        Log::info("saveAttempt called. Type: $quizType, Score: $score");
+        if (!Auth::check()) {
+            Log::info("saveAttempt aborted: User not logged in.");
+            return;
+        }
+
+        Log::info("saveAttempt: saving for user " . Auth::id());
+        $attempt = QuizAttempt::create([
+            'user_id' => Auth::id(),
+            'quiz_type' => $quizType,
+            'score' => $score,
+            'total_questions' => count($answers),
+        ]);
+        Log::info("saveAttempt: Attempt created with ID " . $attempt->id);
+
+        foreach ($answers as $item) {
+            $isCorrect = false;
+            $questionText = '';
+            $correctText = '';
+
+            
+            if ($quizType === 'word-text' || $quizType === 'word') {
+                $isCorrect = ($item['correct_answer_id'] == $item['choice_id']);
+                
+                $word = Word::find($item['correct_answer_id']);
+                if ($word) {
+                    $questionText = $word->word_hiragana . ($word->word_kanji ? " ({$word->word_kanji})" : "");
+                    $correctText = $word->meaning;
+                }
+            } else {
+                $isCorrect = ($item['correct_answer_id'] == $item['choice_id']);
+                $char = Character::find($item['correct_answer_id']);
+                if ($char) {
+                    $questionText = $char->character;
+                    $correctText = $char->romaji;
+                }
+            }
+
+            QuizAnswer::create([
+                'quiz_attempt_id' => $attempt->id,
+                'question_text' => $questionText,
+                'user_answer' => $item['user_input'],
+                'correct_answer_text' => $correctText,
+                'is_correct' => $isCorrect
+            ]);
+        }
+    }
 
     function quiz_level(int $minimum, int $max): array
     {
@@ -239,6 +294,7 @@ class QuizController extends Controller
                 $score++;
             }
         }
+        $this->saveAttempt($quiz_level ?? 'unknown', $answers_collect, $score);
         $answer_info = $this->prepareAnswers($answers_collect);
         session()->forget('quiz_answers');
         session()->forget('quiz_end_time');
@@ -269,6 +325,7 @@ class QuizController extends Controller
                 $score++;
             }
         }
+        $this->saveAttempt($quiz_level ?? 'text', $answers_collect, $score);
         
         if ($quiz_level === 'word' || $quiz_level === 'word-text') {
             $answer_info = $this->prepareWordAnswers($answers_collect);
@@ -318,6 +375,7 @@ class QuizController extends Controller
                 $score++;
             }
         }
+        $this->saveAttempt($quiz_level, $answers_collect, $score);
         $answer_info = $this->prepareWordAnswers($answers_collect);
 
         session()->forget('quiz_answers');

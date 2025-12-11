@@ -64,6 +64,7 @@ Route::controller(UserController::class)
     route::get('/login','login_form')->name('login_form');
     route::post('/login','login')->name('login');
     route::post('/logout','logout')->name('logout');
+    route::get('/profile','profile')->name('profile')->middleware('auth');
 });
 
 

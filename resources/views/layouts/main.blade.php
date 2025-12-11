@@ -1,8 +1,4 @@
-<?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,22 +20,23 @@ if (session_status() === PHP_SESSION_NONE) {
             <ul>
                 <li><a href="{{ route('home.main') }}">Quiz</a></li>
                 <li><a href="{{ route('library.main') }}">Library</a></li>
-                @isset($_SESSION['username'])
-                    <li class="user"><a href="{{ route('user.login') }}">Profile</a></li>
-                @else
+                @auth
+                    <li class="user"><a href="{{ route('user.profile') }}">Profile</a></li>
+                @endguest
+                @guest
                     <li class="user"><a href="{{ route('user.login') }}">Login</a></li>
-                @endisset
+                @endguest
 
             </ul>
         </nav>
         <div class="user-actions">
-            @if (isset($_SESSION['username']))
-                <span class="username">Currently Log in as : {{ $_SESSION['username'] }}</span>
+            @auth
+                <span class="username">Currently Log in as : {{ Auth::user()->name }}</span>
                 <form action="{{ route('user.logout') }}" method="post">
                     @csrf
                     <button type="submit">Logout</button>
                 </form>
-            @endif
+            @endauth
         </div>
     </header>
 
