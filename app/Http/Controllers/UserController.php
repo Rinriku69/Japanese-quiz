@@ -14,22 +14,26 @@ use ValidateRequests;
 
 class UserController extends Controller
 {
-    function register_form(): View{
+    function register_form(): View
+    {
         return view('users.register');
     }
 
-    function register(ServerRequestInterface $request): RedirectResponse{
+    function register(ServerRequestInterface $request): RedirectResponse
+    {
         $users = User::create($request->getParsedBody());
 
         return redirect()->route('user.login');
     }
 
-    function login_form(): View{
+    function login_form(): View
+    {
         return view('users.login');
     }
 
-    function login(ServerRequestInterface $request): RedirectResponse{
-     
+    function login(ServerRequestInterface $request): RedirectResponse
+    {
+
         $credentials = $request->getParsedBody();
 
         // 2. Manually validate the data using Laravel's Validator facade.
@@ -46,16 +50,16 @@ class UserController extends Controller
         if (Auth::attempt(['name' => $credentials['name'], 'password' => $credentials['password']])) {
             $request = request(); // Get global request helper since ServerRequestInterface doesn't have session() easily accessible in this context without conversion or dependency injection of Illuminate Request
             $request->session()->regenerate();
- 
+
             return redirect()->route('home.main');
         }
 
         // For security, use a generic error message.
         return redirect()->route('user.login_form', ['message' => 'Login failed']);
-
     }
 
-    function logout() : RedirectResponse{
+    function logout(): RedirectResponse
+    {
         Auth::logout();
         request()->session()->invalidate();
         request()->session()->regenerateToken();
@@ -63,12 +67,13 @@ class UserController extends Controller
     }
 
 
-    function profile(): View|RedirectResponse {
+    function profile(): View|RedirectResponse
+    {
         $user = Auth::user();
         if (!$user) {
-             return redirect()->route('user.login_form'); 
+            return redirect()->route('user.login_form');
         }
-        
+
         // Eager load quiz attempts ordered by latest
         $attempts = $user->quizAttempts()->orderBy('created_at', 'desc')->get();
 
@@ -101,5 +106,4 @@ class UserController extends Controller
 
         return redirect()->route('user.profile')->with('success', 'Quiz attempt deleted.');
     }
-
 }
