@@ -9,7 +9,7 @@
 ![Home Banner](public/img/home.png)
 
 
-## 💡 The Inspiration: "Learning by Building"
+##  The Inspiration: "Learning by Building"
 
 > *"I believe the best way to learn is through trial and error."*
 
@@ -20,7 +20,7 @@ Originally developed as a personal tool to fill gaps in my own Japanese studies,
 
 This project represents my journey as a **Self-Learner**, combining my interest in programming with my passion for languages.
 
-## 🌟 Key Features
+##  Key Features
 
 * **🎨 Drawing Quiz:** A unique feature allowing users to practice writing Hiragana, Katakana, or Kanji directly on the screen (Canvas integration).
 * **📝 Multiple Quiz Modes:**
@@ -31,14 +31,14 @@ This project represents my journey as a **Self-Learner**, combining my interest 
 * **🗣️ Interactive Feedback:** Audio cues (Correct/Incorrect sounds) to reinforce learning.
 * **🔰 Proficiency Levels:** Organized content for Beginner (Hiragana/Katakana) to Intermediate levels.
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 * **Framework:** Laravel 11
 * **Frontend:** Blade Templates, Custom JavaScript (for Drawing/Canvas logic), CSS
 * **Database:** MySQL
 * **Assets:** Audio integration for quiz feedback
 
-## 🚀 Installation & Setup
+##  Installation & Setup
 
 Since the database migrations and seeders are already prepared, setting up the project is straightforward.
 
