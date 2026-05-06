@@ -30,9 +30,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     // Loop through each of the found elements
     soundButtons.forEach(button => {
-        // Add a 'click' event listener to each one
         button.addEventListener('click', () => {
-            // Stop the sound if it's already playing and reset it to the start
             clickSound.currentTime = 0;
             clickSound.play();
         });
@@ -59,31 +57,29 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
 });
 
-// Wait for the page to fully load before setting up the canvas
         window.addEventListener('load', () => {
             const canvas = document.getElementById('drawing-canvas');
             const ctx = canvas.getContext('2d');
             let isDrawing = false;
 
-            // Set drawing styles
             ctx.strokeStyle = '#333';
             ctx.lineWidth = 12;
-            ctx.lineCap = 'round'; // Makes the line ends smooth
-            ctx.lineJoin = 'round'; // Makes the line corners smooth
+            ctx.lineCap = 'round'; 
+            ctx.lineJoin = 'round'; 
 
-            // Function to start drawing
+          
             function startDrawing(e) {
                 isDrawing = true;
-                draw(e); // Start drawing immediately
+                draw(e); 
             }
 
-            // Function to stop drawing
+           
             function stopDrawing() {
                 isDrawing = false;
-                ctx.beginPath(); // Reset the path
+                ctx.beginPath(); 
             }
 
-            // The main drawing function
+            
             function draw(e) {
                 if (!isDrawing) return;
 
@@ -98,7 +94,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 ctx.moveTo(x, y);
             }
 
-            // Event Listeners for mouse
+            
             canvas.addEventListener('mousedown', startDrawing);
             canvas.addEventListener('mouseup', stopDrawing);
             canvas.addEventListener('mousemove', draw);
@@ -109,12 +105,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
             const clearBtn = document.getElementById('clear-btn');
             const answerOverlay = document.getElementById('answer-overlay');
 
-            // Show the answer when "Finish" is clicked
+            // Show the answer
             finishBtn.addEventListener('click', () => {
                 answerOverlay.classList.remove('hidden');
             });
 
-            // Clear the canvas when "Clear" is clicked
+            // Clear the canvas
             clearBtn.addEventListener('click', () => {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 answerOverlay.classList.add('hidden'); // Also hide the answer again
@@ -124,8 +120,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
        window.addEventListener('load', () => {
     // Find the timer container element in the HTML
     const timerContainer = document.getElementById('overall-timer-container');
-
-    // If the timer container doesn't exist on this page, do nothing.
     if (!timerContainer) {
         return;
     }
@@ -140,7 +134,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const timerInterval = setInterval(() => {
         if (totalSeconds <= 0) {
             clearInterval(timerInterval);
-            // Use the URL we read from the data attribute
+            
             if (resultsUrl) {
                 window.location.href = resultsUrl;
             }
